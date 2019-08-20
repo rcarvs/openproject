@@ -93,6 +93,8 @@ describe 'Accountable widget on my page', type: :feature, js: true do
     accountable_area.expect_to_span(2, 3, 5, 4)
     accountable_area.resize_to(6, 4)
 
+    sleep(0.5)
+
     accountable_area.expect_to_span(2, 3, 7, 5)
     # enlarging the accountable area will have moved the created area down
     created_area.expect_to_span(7, 4, 13, 6)
