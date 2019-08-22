@@ -42,15 +42,15 @@ export class GridAreaService {
     this.mousedOverArea = area;
   }
 
-  public cleanupUnusedAreas() {
-    let unusedRows = Array.from(Array(this.numRows).keys()).slice(1);
+  public cleanupUnusedAreas(save = true) {
+    let unusedRows = Array.from(Array(this.numRows + 1).keys()).slice(1);
 
-    this.widgetAreas.forEach(widgetArea => {
-      unusedRows = unusedRows.filter(item => item !== widgetArea.startRow);
+    this.widgetResources.forEach(widget => {
+      unusedRows = unusedRows.filter(item => item !== widget.startRow);
     });
 
     unusedRows.forEach(number => {
-      this.removeRow(number);
+      this.removeRow(number, save);
     });
   }
 
@@ -242,7 +242,7 @@ export class GridAreaService {
     this.buildAreas();
   }
 
-  public removeRow(row:number) {
+  public removeRow(row:number, save = true) {
     this.numRows--;
 
     // remove widgets that only span the removed row
@@ -267,7 +267,7 @@ export class GridAreaService {
       widget.endRow--;
     });
 
-    this.buildAreas();
+    this.buildAreas(save);
   }
 
   public resetAreas(ignoredArea:GridWidgetArea|null = null) {
@@ -299,7 +299,7 @@ export class GridAreaService {
 
   public removeWidget(removedWidget:GridWidgetResource) {
     this.resource.widgets = this.widgetResources.filter((widget) => widget.id !== removedWidget.id );
-    this.cleanupUnusedAreas();
+    this.cleanupUnusedAreas(true);
   }
 
   public get widgetResources() {

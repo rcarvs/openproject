@@ -72,7 +72,7 @@ export class GridDragAndDropService {
     // shrink if the area would otherwise end outside the grid.
     this.copyPositionButRestrict(dropArea, draggedArea);
 
-    this.layout.cleanupUnusedAreas();
+    this.layout.cleanupUnusedAreas(false);
     this.layout.writeAreaChangesToWidgets();
     this.layout.buildAreas();
   }

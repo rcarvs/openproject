@@ -5,8 +5,6 @@ $grid--header-width: 20px
 
 @mixin grid--commons
   display: grid
-  //grid-column-gap: $grid--gap-width
-  //grid-row-gap: $grid--gap-width
 
 .grid--container
   @include grid--commons
@@ -55,6 +53,7 @@ $grid--header-width: 20px
   &.-gap
     &.-row
       height: $grid--gap-width
+      min-height: $grid--gap-width
 
     &.-column
       width: $grid--gap-width
