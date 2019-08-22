@@ -39,8 +39,7 @@ export class GridResizeService {
 
     let resizeTargets = this.layout.gridAreas.filter((area) => {
       return area.startRow >= this.placeholderArea!.startRow &&
-        area.startColumn >= this.placeholderArea!.startColumn &&
-        !this.layout.isGap(area);
+        area.startColumn >= this.placeholderArea!.startColumn;
     });
 
     this.targetIds = resizeTargets

@@ -82,19 +82,19 @@
   <!-- Grid area to visualize resizing -->
   <div class="grid--area -resizing"
        *ngIf="resize.placeholderArea"
-       [style.grid-row-start]="resize.placeholderArea.startRow"
-       [style.grid-row-end]="resize.placeholderArea.endRow"
-       [style.grid-column-start]="resize.placeholderArea.startColumn"
-       [style.grid-column-end]="resize.placeholderArea.endColumn">
+       [style.grid-row-start]="resize.placeholderArea.gridStartRow"
+       [style.grid-row-end]="resize.placeholderArea.gridEndRow"
+       [style.grid-column-start]="resize.placeholderArea.gridStartColumn"
+       [style.grid-column-end]="resize.placeholderArea.gridEndColumn">
   </div>
 
   <!-- Grid area used as a placeholder while dragging -->
   <div *ngIf="drag.placeholderArea"
        class="grid--area -widgeted -placeholder"
-       [style.grid-row-start]="drag.placeholderArea.startRow"
-       [style.grid-row-end]="drag.placeholderArea.endRow"
-       [style.grid-column-start]="drag.placeholderArea.startColumn"
-       [style.grid-column-end]="drag.placeholderArea.endColumn">
+       [style.grid-row-start]="drag.placeholderArea.gridStartRow"
+       [style.grid-row-end]="drag.placeholderArea.gridEndRow"
+       [style.grid-column-start]="drag.placeholderArea.gridStartColumn"
+       [style.grid-column-end]="drag.placeholderArea.gridEndColumn">
     <div class="widget-box">
       <ndc-dynamic [ndcDynamicComponent]="widgetComponent(drag.placeholderArea.widget)"
                    [ndcDynamicInputs]="{ resource: drag.placeholderArea.widget }"

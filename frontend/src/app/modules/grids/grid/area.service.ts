@@ -52,6 +52,16 @@ export class GridAreaService {
     unusedRows.forEach(number => {
       this.removeRow(number, save);
     });
+
+    let unusedColumns = Array.from(Array(this.numColumns + 1).keys()).slice(1);
+
+    this.widgetResources.forEach(widget => {
+      unusedColumns = unusedColumns.filter(item => item !== widget.startColumn);
+    });
+
+    unusedColumns.forEach(number => {
+      this.removeColumn(number, save);
+    });
   }
 
   public buildAreas(save = true) {
@@ -216,7 +226,7 @@ export class GridAreaService {
     }
   }
 
-  public removeColumn(column:number) {
+  public removeColumn(column:number, save = true) {
     this.numColumns--;
 
     // remove widgets that only span the removed column
@@ -241,7 +251,7 @@ export class GridAreaService {
       widget.endColumn--;
     });
 
-    this.buildAreas();
+    this.buildAreas(save);
   }
 
   public removeRow(row:number, save = true) {

@@ -35,76 +35,16 @@ export class GridAddWidgetService {
     this
       .select(area)
       .then((widgetResource) => {
-        // try to set it to a 2 x 3 layout
-        // but shrink if that is outside the grid or
-        // overlaps any other widget
 
-        // rowGap
-        //if (this.layout.isGap(area)) {
-        //  widgetResource.startRow = Math.floor(widgetResource.startRow / 2) + 1;
-        //  widgetResource.endRow = Math.floor(widgetResource.endRow / 2) + 1;
-        //  widgetResource.startColumn = Math.floor(widgetResource.startColumn / 2);
-        //  widgetResource.endColumn = Math.floor(widgetResource.endColumn / 2) + 1;
-        //} else {
-        //  widgetResource.startRow = Math.floor(widgetResource.startRow / 2);
-        //  widgetResource.endRow = Math.floor(widgetResource.endRow / 2) + 1;
-        //  widgetResource.startColumn = Math.floor(widgetResource.startColumn / 2);
-        //  widgetResource.endColumn = Math.floor(widgetResource.endColumn / 2) + 1;
-        //}
+        if (this.layout.isGap(area)) {
+          this.addLine(area as GridGap);
+        }
 
         let newArea = new GridWidgetArea(widgetResource);
 
-        // Added at last row gap
-        //if (this.layout.isGap(area) && this.layout.numRows * 2 + 1 === area.startRow) {
-        //  this.layout.addRow(this.layout.numRows, false);
-        //// Added at non last row gap
-        if (this.layout.isGap(area) && (area as GridGap).isRow) {
-          // - 1 to have it added before
-          this.layout.addRow(area.startRow - 1, false);
-        } else if (this.layout.isGap(area) && (area as GridGap).isColumn) {
-          // - 1 to have it added before
-          this.layout.addColumn(area.startColumn - 1, false);
-        }
+        this.setMaxWidth(newArea);
 
-        //newArea.endColumn = newArea.endColumn + 1;
-        //newArea.endRow = newArea.endRow + 2;
-
-        //let maxRow:number = this.layout.numRows + 1;
-        //let maxColumn:number = this.layout.numColumns + 1;
-
-        //this.layout.widgetAreas.forEach((existingArea) => {
-        //  if (newArea.startColumnOverlaps(existingArea) &&
-        //    maxColumn > existingArea.startColumn) {
-        //    maxColumn = existingArea.startColumn;
-        //  }
-        //});
-
-        //if (maxColumn < newArea.endColumn) {
-        //  newArea.endColumn = maxColumn;
-        //}
-
-        //this.layout.widgetAreas.forEach((existingArea) => {
-        //  if (newArea.overlaps(existingArea) &&
-        //    maxRow > existingArea.startRow) {
-        //    maxRow = existingArea.startRow;
-        //  }
-        //});
-
-        //if (maxRow < newArea.endRow) {
-        //  newArea.endRow = maxRow;
-        //}
-
-        //newArea.writeAreaChangeToWidget();
-
-        //if (this.layout.isGap(area)) {
-        //} else {
-        //
-        //}
-
-        this.layout.widgetResources.push(newArea.widget);
-        this.layout.writeAreaChangesToWidgets();
-
-        this.layout.buildAreas();
+        this.persist(newArea);
       })
       .catch(() => {
         // user didn't select a widget
@@ -139,6 +79,39 @@ export class GridAddWidgetService {
         resolve(resource);
       });
     });
+  }
+
+  private addLine(area:GridGap) {
+    if (area.isRow) {
+      // - 1 to have it added before
+      this.layout.addRow(area.startRow - 1, false);
+    } else if (area.isColumn) {
+      // - 1 to have it added before
+      this.layout.addColumn(area.startColumn - 1, false);
+    }
+  }
+
+  // try to set it to a layout with a height of 1 and as wide as possible
+  // but shrink if that is outside the grid or overlaps any other widget
+  private setMaxWidth(area:GridWidgetArea) {
+    let maxColumn:number = this.layout.numColumns + 1;
+
+    this.layout.widgetAreas.forEach((existingArea) => {
+      if (area.startColumnOverlaps(existingArea) &&
+        maxColumn > existingArea.startColumn) {
+        maxColumn = existingArea.startColumn;
+      }
+    });
+
+    area.endColumn = maxColumn;
+  }
+
+  private persist(area:GridWidgetArea) {
+    area.writeAreaChangeToWidget();
+    this.layout.widgetResources.push(area.widget);
+    this.layout.writeAreaChangesToWidgets();
+
+    this.layout.buildAreas();
   }
 
   private get isAllowed() {
