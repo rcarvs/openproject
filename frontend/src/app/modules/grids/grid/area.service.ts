@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {GridWidgetArea} from "app/modules/grids/areas/grid-widget-area";
 import {GridArea} from "core-app/modules/grids/areas/grid-area";
+import {GridGap} from "core-app/modules/grids/areas/grid-gap";
 import {GridDmService} from "core-app/modules/hal/dm-services/grid-dm.service";
 import {GridResource} from "core-app/modules/hal/resources/grid-resource";
 import {GridWidgetResource} from "core-app/modules/hal/resources/grid-widget-resource";
@@ -16,6 +17,7 @@ export class GridAreaService {
   public numColumns:number = 0;
   public numRows:number = 0;
   public gridAreas:GridArea[];
+  public gridGaps:GridArea[];
   public widgetAreas:GridWidgetArea[];
   public gridAreaIds:string[];
   public mousedOverArea:GridArea|null;
@@ -41,21 +43,20 @@ export class GridAreaService {
   }
 
   public cleanupUnusedAreas() {
-    let unusedRows = Array.from(Array(this.numRows * 2 + 1).keys()).slice(1);
+    let unusedRows = Array.from(Array(this.numRows).keys()).slice(1);
 
     this.widgetAreas.forEach(widgetArea => {
       unusedRows = unusedRows.filter(item => item !== widgetArea.startRow);
     });
 
     unusedRows.forEach(number => {
-      if (number % 2 !== 1) {
-        this.removeRow(number);
-      }
+      this.removeRow(number);
     });
   }
 
   public buildAreas(save = true) {
     this.gridAreas = this.buildGridAreas();
+    this.gridGaps = this.buildGridGaps();
     this.gridAreaIds = this.buildGridAreaIds();
     this.widgetAreas = this.buildGridWidgetAreas();
 
@@ -80,7 +81,7 @@ export class GridAreaService {
   }
 
   public isGap(area:GridArea) {
-    return area.startRow % 2 === 1 || area.startColumn % 2 === 1;
+    return area instanceof GridGap;
   }
 
   private saveGrid(resource:GridWidgetResource|any, schema?:SchemaResource) {
@@ -115,8 +116,18 @@ export class GridAreaService {
   private buildGridAreas() {
     let cells:GridArea[] = [];
 
-    for (let row = 1; row <= this.numRows * 2 + 1; row++) {
+    for (let row = 1; row <= this.numRows; row++) {
       cells.push(...this.buildGridAreasRow(row));
+    }
+
+    return cells;
+  }
+
+  private buildGridGaps() {
+    let cells:GridArea[] = [];
+
+    for (let row = 1; row <= this.numRows + 1; row++) {
+      cells.push(...this.buildGridGapRow(row));
     }
 
     return cells;
@@ -125,13 +136,37 @@ export class GridAreaService {
   private buildGridAreasRow(row:number) {
     let cells:GridArea[] = [];
 
-    for (let column = 1; column <= this.numColumns * 2 + 1; column++) {
+    for (let column = 1; column <= this.numColumns; column++) {
       let cell = new GridArea(row,
         row + 1,
         column,
         column + 1);
 
       cells.push(cell);
+    }
+
+    return cells;
+  }
+
+  private buildGridGapRow(row:number) {
+    let cells:GridGap[] = [];
+
+    for (let column = 1; column <= this.numColumns; column++) {
+      cells.push(new GridGap(row,
+                                  row + 1,
+                             column,
+                                  column + 1,
+                                  'row'));
+    }
+
+    if (row <= this.numRows) {
+      for (let column = 1; column <= this.numColumns + 1; column++) {
+        cells.push(new GridGap(row,
+          row + 1,
+          column,
+          column + 1,
+          'column'));
+      }
     }
 
     return cells;

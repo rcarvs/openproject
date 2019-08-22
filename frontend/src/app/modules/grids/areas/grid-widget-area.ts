@@ -5,19 +5,19 @@ export class GridWidgetArea extends GridArea {
   public widget:GridWidgetResource;
 
   constructor(widget:GridWidgetResource) {
-    super(widget.startRow * 2,
-      widget.endRow * 2 - 1,
-      widget.startColumn * 2,
-      widget.endColumn * 2 - 1);
+    super(widget.startRow,
+      widget.endRow,
+      widget.startColumn,
+      widget.endColumn);
 
     this.widget = widget;
   }
 
   public reset() {
-    this.startRow = this.widget.startRow * 2;
-    this.endRow = this.widget.endRow * 2 - 1;
-    this.startColumn = this.widget.startColumn * 2;
-    this.endColumn = this.widget.endColumn * 2 - 1;
+    this.startRow = this.widget.startRow;
+    this.endRow = this.widget.endRow;
+    this.startColumn = this.widget.startColumn;
+    this.endColumn = this.widget.endColumn;
   }
 
   public moveRight() {
@@ -64,9 +64,9 @@ export class GridWidgetArea extends GridArea {
   }
 
   public writeAreaChangeToWidget() {
-    this.widget.startRow = this.startRow / 2;
-    this.widget.endRow = (this.endRow + 1) / 2;
-    this.widget.startColumn = this.startColumn / 2;
-    this.widget.endColumn = (this.endColumn + 1) / 2;
+    this.widget.startRow = this.startRow;
+    this.widget.endRow = this.endRow;
+    this.widget.startColumn = this.startColumn;
+    this.widget.endColumn = this.endColumn;
   }
 }

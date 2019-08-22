@@ -58,7 +58,7 @@ export class GridAddWidgetService {
           this.layout.addRow(this.layout.numRows, false);
         // Added at non last row gap
         } else if (this.layout.isGap(area)) {
-          this.move.down(newArea, newArea);
+          this.layout.addRow(Math.floor(area.endRow / 2), false);
         }
 
         //newArea.endColumn = newArea.endColumn + 1;

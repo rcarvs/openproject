@@ -7,10 +7,10 @@
        class="grid--area -widgeted"
        [ngClass]="{'-dragged': drag.isDragged(area),
                    '-undragged': drag.currentlyDragging && !drag.isDragged(area)}"
-       [style.grid-row-start]="area.startRow"
-       [style.grid-row-end]="area.endRow"
-       [style.grid-column-start]="area.startColumn"
-       [style.grid-column-end]="area.endColumn"
+       [style.grid-row-start]="area.gridStartRow"
+       [style.grid-row-end]="area.gridEndRow"
+       [style.grid-column-start]="area.gridStartColumn"
+       [style.grid-column-end]="area.gridEndColumn"
        cdkDropList
        [id]="area.guid"
        [cdkDropListData]="area"
@@ -42,15 +42,13 @@
   <!-- One grid area per cell (row x columns) -->
   <div *ngFor="let area of layout.gridAreas; trackBy: identifyGridArea;"
        class="grid--area"
-       [ngClass] = "{'-drop-target': drag.currentlyDragging && !layout.isGap(area),
+       [ngClass] = "{'-drop-target': drag.currentlyDragging,
                      '-resize-target': resize.isTarget(area),
-                     '-addable': add.isAddable(area),
-                     '-row-gap': area.startRow % 2 === 1,
-                     '-column-gap': area.startColumn % 2 === 1}"
-       [style.grid-row-start]="area.startRow"
-       [style.grid-row-end]="area.endRow"
-       [style.grid-column-start]="area.startColumn"
-       [style.grid-column-end]="area.endColumn"
+                     '-addable': add.isAddable(area)}"
+       [style.grid-row-start]="area.gridStartRow"
+       [style.grid-row-end]="area.gridEndRow"
+       [style.grid-column-start]="area.gridStartColumn"
+       [style.grid-column-end]="area.gridEndColumn"
        cdkDropList
        [id]="area.guid"
        (mouseover)="layout.setMousedOverArea(area)"
@@ -61,6 +59,23 @@
     <div class="grid--widget-add"
          *ngIf="add.isAddable(area) && !(area.startRow % 2 === 1 && area.startColumn % 2 === 1)"
          (click)="add.widget(area, layout.schema)">
+    </div>
+  </div>
+
+  <div *ngFor="let gap of layout.gridGaps; trackBy: identifyGridArea;"
+       class="grid--area -gap"
+       [ngClass] = "{'-addable': add.isAddable(gap),
+                     '-row': gap.isRow,
+                     '-column': gap.isColumn}"
+       [style.grid-row-start]="gap.gridStartRow"
+       [style.grid-row-end]="gap.gridEndRow"
+       [style.grid-column-start]="gap.gridStartColumn"
+       [style.grid-column-end]="gap.gridEndColumn"
+       [id]="gap.guid"
+       (mouseover)="layout.setMousedOverArea(gap)">
+    <div class="grid--widget-add"
+         *ngIf="add.isAddable(gap)"
+         (click)="add.widget(gap, layout.schema)">
     </div>
   </div>
 

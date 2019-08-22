@@ -52,11 +52,12 @@ $grid--header-width: 20px
   &.-undragged
     pointer-events: none
 
-  &.-row-gap
-    height: $grid--gap-width
+  &.-gap
+    &.-row
+      height: $grid--gap-width
 
-  &.-column-gap
-    width: $grid--gap-width
+    &.-column
+      width: $grid--gap-width
 
   .resizer
     margin-top: 0
