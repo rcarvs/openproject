@@ -57,8 +57,8 @@
        (cdkDropListEntered)="drag.entered($event)"
        [cdkDropListConnectedTo]="layout.gridAreaIds">
     <div class="grid--widget-add"
-         *ngIf="add.isAddable(area) && !(area.startRow % 2 === 1 && area.startColumn % 2 === 1)"
-         (click)="add.widget(area, layout.schema)">
+         *ngIf="add.isAddable(area)"
+         (click)="add.widget(area)">
     </div>
   </div>
 

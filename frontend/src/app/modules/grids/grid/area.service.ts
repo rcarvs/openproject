@@ -189,7 +189,7 @@ export class GridAreaService {
   public addColumn(column:number) {
     this.numColumns++;
 
-    this.widgetResources.filter((widget) => {
+    this.widgetAreas.filter((widget) => {
       return widget.startColumn > column;
     }).forEach((widget) => {
       widget.startColumn++;
@@ -202,7 +202,7 @@ export class GridAreaService {
   public addRow(row:number, build = true) {
     this.numRows++;
 
-    this.widgetResources.filter((widget) => {
+    this.widgetAreas.filter((widget) => {
       return widget.startRow > row;
     }).forEach((widget) => {
       widget.startRow++;

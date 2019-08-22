@@ -30,35 +30,36 @@ export class GridAddWidgetService {
       this.isAllowed;
   }
 
-  public widget(area:GridArea, schema:SchemaResource) {
+  public widget(area:GridArea) {
     this
-      .select(area, schema)
+      .select(area)
       .then((widgetResource) => {
         // try to set it to a 2 x 3 layout
         // but shrink if that is outside the grid or
         // overlaps any other widget
 
         // rowGap
-        if (this.layout.isGap(area)) {
-          widgetResource.startRow = Math.floor(widgetResource.startRow / 2) + 1;
-          widgetResource.endRow = Math.floor(widgetResource.endRow / 2) + 1;
-          widgetResource.startColumn = Math.floor(widgetResource.startColumn / 2);
-          widgetResource.endColumn = Math.floor(widgetResource.endColumn / 2) + 1;
-        } else {
-          widgetResource.startRow = Math.floor(widgetResource.startRow / 2);
-          widgetResource.endRow = Math.floor(widgetResource.endRow / 2) + 1;
-          widgetResource.startColumn = Math.floor(widgetResource.startColumn / 2);
-          widgetResource.endColumn = Math.floor(widgetResource.endColumn / 2) + 1;
-        }
+        //if (this.layout.isGap(area)) {
+        //  widgetResource.startRow = Math.floor(widgetResource.startRow / 2) + 1;
+        //  widgetResource.endRow = Math.floor(widgetResource.endRow / 2) + 1;
+        //  widgetResource.startColumn = Math.floor(widgetResource.startColumn / 2);
+        //  widgetResource.endColumn = Math.floor(widgetResource.endColumn / 2) + 1;
+        //} else {
+        //  widgetResource.startRow = Math.floor(widgetResource.startRow / 2);
+        //  widgetResource.endRow = Math.floor(widgetResource.endRow / 2) + 1;
+        //  widgetResource.startColumn = Math.floor(widgetResource.startColumn / 2);
+        //  widgetResource.endColumn = Math.floor(widgetResource.endColumn / 2) + 1;
+        //}
 
         let newArea = new GridWidgetArea(widgetResource);
 
         // Added at last row gap
-        if (this.layout.isGap(area) && this.layout.numRows * 2 + 1 === area.startRow) {
-          this.layout.addRow(this.layout.numRows, false);
-        // Added at non last row gap
-        } else if (this.layout.isGap(area)) {
-          this.layout.addRow(Math.floor(area.endRow / 2), false);
+        //if (this.layout.isGap(area) && this.layout.numRows * 2 + 1 === area.startRow) {
+        //  this.layout.addRow(this.layout.numRows, false);
+        //// Added at non last row gap
+        if (this.layout.isGap(area)) {
+          // - 1 to have it added before
+          this.layout.addRow(area.startRow - 1, false);
         }
 
         //newArea.endColumn = newArea.endColumn + 1;
@@ -106,9 +107,9 @@ export class GridAddWidgetService {
       });
   }
 
-  private select(area:GridArea, schema:SchemaResource) {
+  private select(area:GridArea) {
     return new Promise<GridWidgetResource>((resolve, reject) => {
-      const modal = this.opModalService.show(AddGridWidgetModal, this.injector, { schema: schema });
+      const modal = this.opModalService.show(AddGridWidgetModal, this.injector, { schema: this.layout.schema });
       modal.closingEvent.subscribe((modal:AddGridWidgetModal) => {
         let registered = modal.chosenWidget;
 
