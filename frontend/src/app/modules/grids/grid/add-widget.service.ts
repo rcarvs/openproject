@@ -10,6 +10,7 @@ import {GridDragAndDropService} from "core-app/modules/grids/grid/drag-and-drop.
 import {GridResizeService} from "core-app/modules/grids/grid/resize.service";
 import {SchemaResource} from "core-app/modules/hal/resources/schema-resource";
 import {GridMoveService} from "core-app/modules/grids/grid/move.service";
+import {GridGap} from "core-app/modules/grids/areas/grid-gap";
 
 @Injectable()
 export class GridAddWidgetService {
@@ -57,9 +58,12 @@ export class GridAddWidgetService {
         //if (this.layout.isGap(area) && this.layout.numRows * 2 + 1 === area.startRow) {
         //  this.layout.addRow(this.layout.numRows, false);
         //// Added at non last row gap
-        if (this.layout.isGap(area)) {
+        if (this.layout.isGap(area) && (area as GridGap).isRow) {
           // - 1 to have it added before
           this.layout.addRow(area.startRow - 1, false);
+        } else if (this.layout.isGap(area) && (area as GridGap).isColumn) {
+          // - 1 to have it added before
+          this.layout.addColumn(area.startColumn - 1, false);
         }
 
         //newArea.endColumn = newArea.endColumn + 1;

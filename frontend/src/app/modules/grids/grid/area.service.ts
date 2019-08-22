@@ -186,7 +186,7 @@ export class GridAreaService {
     });
   }
 
-  public addColumn(column:number) {
+  public addColumn(column:number, build = true) {
     this.numColumns++;
 
     this.widgetAreas.filter((widget) => {
@@ -196,7 +196,9 @@ export class GridAreaService {
       widget.endColumn++;
     });
 
-    this.buildAreas();
+    if (build) {
+      this.buildAreas();
+    }
   }
 
   public addRow(row:number, build = true) {
