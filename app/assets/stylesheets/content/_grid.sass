@@ -170,8 +170,14 @@ $grid--header-width: 20px
     @include icon-font-common
     @include icon-mixin-add
 
-  .-column-gap &, .-row-gap &
-    padding: 5px
+  &.-gap
+    width: 100%
+    height: 100%
+    display: flex
+    justify-content: center
+    align-items: center
+    padding: 0
+    border-radius: initial
 
 .grid--widget-remove
   float: right

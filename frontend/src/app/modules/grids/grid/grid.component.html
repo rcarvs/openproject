@@ -73,7 +73,7 @@
        [style.grid-column-end]="gap.gridEndColumn"
        [id]="gap.guid"
        (mouseover)="layout.setMousedOverArea(gap)">
-    <div class="grid--widget-add"
+    <div class="grid--widget-add -gap"
          *ngIf="add.isAddable(gap)"
          (click)="add.widget(gap, layout.schema)">
     </div>
