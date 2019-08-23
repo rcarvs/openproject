@@ -214,18 +214,33 @@ export class GridAreaService {
     });
   }
 
-  public addColumn(column:number, build = true) {
+  public addColumn(column:number, exclude_row:number) {
     this.numColumns++;
 
-    this.widgetAreas.filter((widget) => {
-      return widget.startColumn > column;
-    }).forEach((widget) => {
-      widget.startColumn++;
-      widget.endColumn++;
-    });
+    for (let row = 1; row <= this.numRows; row++) {
+      if (row === exclude_row) {
+        this.widgetAreas.filter((widget) => {
+          return widget.startRow === row && widget.startColumn > column;
+        }).forEach((widget) => {
+          widget.startColumn++;
+          widget.endColumn++;
+        });
 
-    if (build) {
-      this.buildAreas();
+        continue;
+      }
+
+      let rowWidgets = this.widgetAreas.filter(widget => widget.startRow === row);
+
+      let widget = rowWidgets
+                   .sort((a, b) => a.startColumn - b.startColumn)
+                   .find(widget => widget.startColumn === column + 1 ||
+                                            widget.endColumn === column + 1 ||
+                                            widget.startColumn <= column && widget.endColumn > column);
+
+      if (widget) {
+        widget.endColumn++;
+        this.moveSubsequentRowWidgets(rowWidgets, widget.endColumn - 1);
+      }
     }
   }
 
@@ -334,5 +349,14 @@ export class GridAreaService {
 
   public get widgetResources() {
     return (this.resource && this.resource.widgets) || [];
+  }
+
+  private moveSubsequentRowWidgets(rowWidgets:GridWidgetArea[], column:number) {
+    rowWidgets.forEach(subsequentWidget => {
+      if (subsequentWidget.startColumn >= column) {
+        subsequentWidget.startColumn++;
+        subsequentWidget.endColumn++;
+      }
+    });
   }
 }

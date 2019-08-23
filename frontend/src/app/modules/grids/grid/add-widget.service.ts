@@ -86,7 +86,7 @@ export class GridAddWidgetService {
       this.layout.addRow(area.startRow - 1, false);
     } else if (area.isColumn) {
       // - 1 to have it added before
-      this.layout.addColumn(area.startColumn - 1, false);
+      this.layout.addColumn(area.startColumn - 1, area.startRow);
     }
   }
 
