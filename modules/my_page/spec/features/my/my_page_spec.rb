@@ -81,9 +81,16 @@ describe 'My page', type: :feature, js: true do
     my_page.add_widget(1, 1, :row, 'Calendar')
 
     calendar_area = Components::Grids::GridArea.new('.grid--area.-widgeted:nth-of-type(3)')
-    calendar_area.expect_to_span(1, 1, 2, 3)
+    calendar_area.expect_to_span(1, 1, 2, 2)
 
+    # resizing will move the created area down
+    calendar_area.resize_to(1, 2)
+
+    sleep(0.1)
+
+    # resizing again will not influence the created area. It will stay down
     calendar_area.resize_to(1, 1)
+
     calendar_area.expect_to_span(1, 1, 2, 2)
 
     # add widget right next to the calendar widget

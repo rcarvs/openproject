@@ -83,7 +83,7 @@ export class GridAddWidgetService {
   private addLine(area:GridGap) {
     if (area.isRow) {
       // - 1 to have it added before
-      this.layout.addRow(area.startRow - 1, false);
+      this.layout.addRow(area.startRow - 1, area.startColumn);
     } else if (area.isColumn) {
       // - 1 to have it added before
       this.layout.addColumn(area.startColumn - 1, area.startRow);
