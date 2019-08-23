@@ -1,6 +1,8 @@
 $grid--gap-width: 20px
 $grid--header-width: 20px
 
+$grid--widget-padding: 20px
+
 @import openproject/mixins
 
 @mixin grid--commons
@@ -23,7 +25,7 @@ $grid--header-width: 20px
     z-index: 10
     @include widget-box--style
     margin: 0
-    padding: 20px
+    padding: $grid--widget-padding
 
     .widget-box
       min-height: 200px
@@ -61,7 +63,8 @@ $grid--header-width: 20px
   .resizer
     margin-top: 0
     margin-left: auto
-    margin-right: -20px
+    margin-right: -$grid--widget-padding
+    margin-bottom: -$grid--widget-padding
     position: relative
 
   .cdk-drag-handle

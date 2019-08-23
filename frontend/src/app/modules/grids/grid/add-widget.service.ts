@@ -8,7 +8,6 @@ import {GridWidgetArea} from "core-app/modules/grids/areas/grid-widget-area";
 import {GridAreaService} from "core-app/modules/grids/grid/area.service";
 import {GridDragAndDropService} from "core-app/modules/grids/grid/drag-and-drop.service";
 import {GridResizeService} from "core-app/modules/grids/grid/resize.service";
-import {SchemaResource} from "core-app/modules/hal/resources/schema-resource";
 import {GridMoveService} from "core-app/modules/grids/grid/move.service";
 import {GridGap} from "core-app/modules/grids/areas/grid-gap";
 
