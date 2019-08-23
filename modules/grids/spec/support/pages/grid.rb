@@ -47,11 +47,6 @@ module Pages
       end
     end
 
-    def expect_no_headers
-      expect(page)
-        .to have_no_selector('.grid--header')
-    end
-
     def area_of(row_number, column_number, location = :within)
       real_row, real_column = case location
                               when :within
