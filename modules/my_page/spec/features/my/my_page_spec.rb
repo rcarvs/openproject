@@ -106,28 +106,41 @@ describe 'My page', type: :feature, js: true do
     watched_area = Components::Grids::GridArea.new('.grid--area.-widgeted:nth-of-type(5)')
     watched_area.expect_to_exist
 
+    sleep(1)
+
     # dragging makes room for the dragged widget which means
     # that widgets that have been there are moved down
     created_area.drag_to(1, 3)
 
     sleep(2)
 
-    watched_area.expect_to_span(2, 3, 3, 4)
     calendar_area.expect_to_span(1, 1, 3, 2)
+    watched_area.expect_to_span(2, 3, 3, 4)
     assigned_area.expect_to_span(3, 1, 4, 2)
     created_area.expect_to_span(1, 3, 2, 4)
+    news_area.expect_to_span(1, 2, 2, 3)
+
+    # dragging again makes room for the dragged widget which means
+    # that widgets that have been there are moved down. Additionally,
+    # as no more widgets start in the second column, that column is removed
+    news_area.drag_to(1, 3)
+
+    sleep(2)
+
+    calendar_area.expect_to_span(1, 1, 3, 2)
+    news_area.expect_to_span(1, 2, 2, 3)
+    created_area.expect_to_span(2, 2, 3, 3)
+    assigned_area.expect_to_span(3, 1, 4, 2)
+    watched_area.expect_to_span(3, 2, 4, 3)
 
     # Reloading keeps the user's values
     visit home_path
     my_page.visit!
 
-    my_page.add_widget(2, 4, :column, 'Documents')
-    documents_area = Components::Grids::GridArea.new('.grid--area.-widgeted:nth-of-type(6)')
-
-    watched_area.expect_to_span(2, 3, 3, 4)
     calendar_area.expect_to_span(1, 1, 3, 2)
+    news_area.expect_to_span(1, 2, 2, 3)
+    created_area.expect_to_span(2, 2, 3, 3)
     assigned_area.expect_to_span(3, 1, 4, 2)
-    created_area.expect_to_span(1, 3, 2, 4)
-    documents_area.expect_to_span(2, 4, 3, 5)
-  end
+    watched_area.expect_to_span(3, 2, 4, 3)
+ end
 end

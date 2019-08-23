@@ -72,21 +72,21 @@ export class GridDragAndDropService {
     // shrink if the area would otherwise end outside the grid.
     this.copyPositionButRestrict(dropArea, draggedArea);
 
-    this.layout.cleanupUnusedAreas(false);
     this.layout.writeAreaChangesToWidgets();
+    this.layout.cleanupUnusedAreas(false);
     this.layout.buildAreas();
   }
 
   private copyPositionButRestrict(source:GridArea, sink:GridWidgetArea) {
     sink.startRow = source.startRow;
-    if (source.startRow + sink.widget.height > this.layout.numRows * 2 + 1) {
+    if (source.startRow + sink.widget.height > this.layout.numRows + 1) {
       sink.endRow = this.layout.numRows + 1;
     } else {
       sink.endRow = source.startRow + sink.widget.height;
     }
 
     sink.startColumn = source.startColumn;
-    if (source.startColumn + sink.widget.width > this.layout.numColumns * 2 + 1) {
+    if (source.startColumn + sink.widget.width > this.layout.numColumns + 1) {
       sink.endColumn = this.layout.numColumns + 1;
     } else {
       sink.endColumn = source.startColumn + sink.widget.width;
