@@ -149,5 +149,5 @@ describe 'My page', type: :feature, js: true do
     created_area.expect_to_span(2, 2, 3, 3)
     assigned_area.expect_to_span(3, 1, 4, 2)
     watched_area.expect_to_span(3, 2, 4, 3)
- end
+  end
 end
