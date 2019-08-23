@@ -7,6 +7,7 @@ import {GridResource} from "core-app/modules/hal/resources/grid-resource";
 import {GridWidgetResource} from "core-app/modules/hal/resources/grid-widget-resource";
 import {SchemaResource} from "core-app/modules/hal/resources/schema-resource";
 import {WidgetChangeset} from "core-app/modules/grids/widgets/widget-changeset";
+import * as moment from 'moment';
 
 @Injectable()
 export class GridAreaService {
@@ -50,7 +51,9 @@ export class GridAreaService {
     });
 
     unusedRows.forEach(number => {
-      this.removeRow(number, save);
+      if (this.numRows > 1) {
+        this.removeRow(number, save);
+      }
     });
 
     let unusedColumns = Array.from(Array(this.numColumns + 1).keys()).slice(1);
@@ -60,7 +63,9 @@ export class GridAreaService {
     });
 
     unusedColumns.forEach(number => {
-      this.removeColumn(number, save);
+      if (this.numColumns > 1) {
+        this.removeColumn(number, save);
+      }
     });
   }
 
@@ -92,6 +97,14 @@ export class GridAreaService {
 
   public isGap(area:GridArea) {
     return area instanceof GridGap;
+  }
+
+  public get isSingleCell() {
+    return this.numRows === 1 && this.numColumns === 1 && this.widgetResources.length === 0;
+  }
+
+  public get isNewlyCreated() {
+    return moment(moment.utc()).diff(moment(this.resource.createdAt), 'seconds') < 20;
   }
 
   private saveGrid(resource:GridWidgetResource|any, schema?:SchemaResource) {
@@ -135,6 +148,11 @@ export class GridAreaService {
 
   private buildGridGaps() {
     let cells:GridArea[] = [];
+
+    // special case where we want no gaps
+    if (this.isSingleCell) {
+      return cells;
+    }
 
     for (let row = 1; row <= this.numRows + 1; row++) {
       cells.push(...this.buildGridGapRow(row));

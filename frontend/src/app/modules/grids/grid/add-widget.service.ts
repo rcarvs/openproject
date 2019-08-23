@@ -26,7 +26,7 @@ export class GridAddWidgetService {
   public isAddable(area:GridArea) {
     return !this.drag.currentlyDragging &&
       !this.resize.currentlyResizing &&
-      this.layout.mousedOverArea === area &&
+      (this.layout.mousedOverArea === area || this.layout.isSingleCell || this.layout.isNewlyCreated) &&
       this.isAllowed;
   }
 
@@ -93,16 +93,13 @@ export class GridAddWidgetService {
   // try to set it to a layout with a height of 1 and as wide as possible
   // but shrink if that is outside the grid or overlaps any other widget
   private setMaxWidth(area:GridWidgetArea) {
-    let maxColumn:number = this.layout.numColumns + 1;
+    area.endColumn = this.layout.numColumns + 1;
 
     this.layout.widgetAreas.forEach((existingArea) => {
-      if (area.startColumnOverlaps(existingArea) &&
-        maxColumn > existingArea.startColumn) {
-        maxColumn = existingArea.startColumn;
+      if (area.startColumnOverlaps(existingArea)) {
+        area.endColumn = existingArea.startColumn;
       }
     });
-
-    area.endColumn = maxColumn;
   }
 
   private persist(area:GridWidgetArea) {
