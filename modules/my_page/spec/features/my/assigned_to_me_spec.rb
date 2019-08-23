@@ -74,6 +74,7 @@ describe 'Assigned to me embedded query on my page', type: :feature, js: true do
     Pages::My::Page.new
   end
   let(:assigned_area) { Components::Grids::GridArea.new('.grid--area.-widgeted:nth-of-type(1)') }
+  let(:created_area) { Components::Grids::GridArea.new('.grid--area.-widgeted:nth-of-type(1)') }
   let(:embedded_table) { Pages::EmbeddedWorkPackagesTable.new(assigned_area.area) }
   let(:hierarchies) { ::Components::WorkPackages::Hierarchies.new }
 
@@ -174,7 +175,13 @@ describe 'Assigned to me embedded query on my page', type: :feature, js: true do
 
     # exists as default
     assigned_area.expect_to_exist
-    assigned_area.resize_to(2, 2)
+    assigned_area.resize_to(1, 2)
+
+    sleep(0.1)
+
+    assigned_area.expect_to_span(1, 2, 2, 3)
+    # has been moved down by resizing
+    created_area.expect_to_span(2, 2, 3, 3)
 
     expect(assigned_area.area)
       .to have_selector('.subject', text: assigned_work_package.subject)

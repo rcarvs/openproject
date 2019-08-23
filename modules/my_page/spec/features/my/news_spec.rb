@@ -66,7 +66,7 @@ describe 'My page news widget spec', type: :feature, js: true do
     my_page.add_widget(1, 1, :within, 'News')
 
     news_area = Components::Grids::GridArea.new('.grid--area.-widgeted:nth-of-type(1)')
-    news_area.expect_to_span(1, 1, 2, 3)
+    news_area.expect_to_span(1, 1, 2, 2)
 
     expect(page)
       .to have_content visible_news.title

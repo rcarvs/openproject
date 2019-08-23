@@ -88,19 +88,18 @@ describe 'Accountable widget on my page', type: :feature, js: true do
 
     accountable_area.expect_to_span(2, 2, 3, 3)
 
+    sleep(0.2)
+
+    assigned_area = Components::Grids::GridArea.new('.grid--area.-widgeted:nth-of-type(1)')
+    assigned_area.remove
+
     sleep(0.1)
 
-    accountable_area.drag_to(2, 1)
-
-    sleep(0.5)
-
+    created_area = Components::Grids::GridArea.new('.grid--area.-widgeted:nth-of-type(1)')
+    created_area.expect_to_span(1, 1, 2, 2)
+    # as the assigned widget was removed, the numbers have changed
+    accountable_area = Components::Grids::GridArea.new('.grid--area.-widgeted:nth-of-type(2)')
     accountable_area.expect_to_span(2, 1, 3, 2)
-
-    accountable_area.resize_to(2, 2)
-
-    sleep(0.1)
-
-    accountable_area.expect_to_span(2, 1, 3, 3)
 
     expect(accountable_area.area)
       .to have_selector('.subject', text: accountable_work_package.subject)

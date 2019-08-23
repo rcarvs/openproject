@@ -39,9 +39,9 @@ module Pages
       end
     end
 
-    def expect_unable_to_add_widget(row_number, column_number, name = nil)
+    def expect_unable_to_add_widget(row_number, column_number, location, name = nil)
       if name
-        expect_specific_widget_unaddable(row_number, column_number, name)
+        expect_specific_widget_unaddable(row_number, column_number, location, name)
       else
         expect_widget_adding_prohibited_generally(row_number, column_number)
       end
