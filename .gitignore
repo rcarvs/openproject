@@ -99,7 +99,7 @@ node_modules/
 /package-lock.json
 plaintext.yml
 structure.sql
-#postgres expose
-/expose
-/expose/*
-/expose/
+#postgres export
+/export
+/export/*
+/export/
