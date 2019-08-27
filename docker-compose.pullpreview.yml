@@ -23,7 +23,7 @@ web:
     - "HEROKU=true"
     - "OP_ADMIN_USER_SEEDER_FORCE_PASSWORD_CHANGE=off"
   ports:
-    - "3333:8080"
+    - "3000:8080"
   command: "./docker/web"
   volumes:
     - "/var/openproject/assets"
