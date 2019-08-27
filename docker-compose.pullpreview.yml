@@ -1,5 +1,6 @@
 db:
   image: postgres:9.6.3
+  restart: always
   environment:
     POSTGRES_USER: app
     POSTGRES_PASSWORD: p4ssw0rd
@@ -11,6 +12,7 @@ db:
 
 web:
   build: .
+  restart: always
   links:
     - db
   environment:
@@ -28,6 +30,7 @@ web:
 
 worker:
   build: .
+  restart: always
   links:
     - db
   environment:
