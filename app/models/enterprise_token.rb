@@ -42,7 +42,7 @@ class EnterpriseToken < ActiveRecord::Base
     end
 
     def show_banners?
-      OpenProject::Configuration.ee_manager_visible? && (!current || current.expired?)
+      false
     end
 
     def set_current_token

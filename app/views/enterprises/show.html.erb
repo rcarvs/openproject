@@ -1,25 +1,27 @@
-<% html_title t(:label_administration), t(:label_enterprise_edition) %>
+<% if EnterpriseToken.show_banners? %>
+  <% html_title t(:label_administration), t(:label_enterprise_edition) %>
 
-<%= toolbar title: t(:label_enterprise_edition) do %>
-  <% if EnterpriseToken.show_banners? %>
-    <li class="toolbar-item">
-      <%= link_to( "#{OpenProject::Static::Links.links[:upsale][:href]}/?utm_source=unknown&utm_medium=community-edition&utm_campaign=enterprise-admin",
-            { class: 'button -alt-highlight',
-              target: '_blank',
-              title: t('admin.enterprise.order')}) do %>
-        <%= op_icon('button--icon icon-add') %>
-        <span class="button--text"><%= t('admin.enterprise.order') %></span>
-      <% end %>
-    </li>
+  <%= toolbar title: t(:label_enterprise_edition) do %>
+    <% if EnterpriseToken.show_banners? %>
+      <li class="toolbar-item">
+        <%= link_to( "#{OpenProject::Static::Links.links[:upsale][:href]}/?utm_source=unknown&utm_medium=community-edition&utm_campaign=enterprise-admin",
+              { class: 'button -alt-highlight',
+                target: '_blank',
+                title: t('admin.enterprise.order')}) do %>
+          <%= op_icon('button--icon icon-add') %>
+          <span class="button--text"><%= t('admin.enterprise.order') %></span>
+        <% end %>
+      </li>
+    <% end %>
   <% end %>
+
+  <%= error_messages_for 'token' %>
+
+  <% if @current_token.present? %>
+    <%= render partial: "current" %>
+  <% else %>
+    <%= render partial: "info" %>
+  <% end %>
+
+  <%= render partial: "form" %>
 <% end %>
-
-<%= error_messages_for 'token' %>
-
-<% if @current_token.present? %>
-  <%= render partial: "current" %>
-<% else %>
-  <%= render partial: "info" %>
-<% end %>
-
-<%= render partial: "form" %>
